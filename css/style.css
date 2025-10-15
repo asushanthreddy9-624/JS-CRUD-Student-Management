@@ -89,13 +89,23 @@ body {
     color: #28a745;
 }
 
-.footer {
-    margin-top: 3rem;
-    padding: 1.5rem 0;
-    background-color: #343a40;
-    color: white;
-    text-align: center;
-    border-radius: 15px 15px 0 0;
+.module-period {
+    background-color: #e9ecef;
+    color: #495057;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.module-title-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.module-title-section h4 {
+    margin-bottom: 0.3rem;
 }
 
 /* Responsive adjustments */
@@ -118,5 +128,22 @@ body {
     
     .student-card .card-body {
         padding: 1.5rem;
+    }
+    
+    .module-header {
+        padding: 0.8rem 1rem;
+    }
+    
+    .module-header h4 {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons {
+        margin-top: 10px;
+    }
+    
+    .action-buttons .btn {
+        margin: 2px;
+        font-size: 0.8rem;
     }
 }
