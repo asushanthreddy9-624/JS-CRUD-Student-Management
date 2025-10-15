@@ -1,0 +1,122 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.student-card {
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    border: none;
+    transition: transform 0.3s;
+    margin-bottom: 2rem;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+}
+
+.module-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border: none;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+}
+
+.module-card:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.attendance-progress, .marks-progress {
+    height: 25px;
+    border-radius: 12px;
+}
+
+.percentage-badge {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.action-buttons .btn {
+    margin: 0 3px;
+}
+
+.module-header {
+    background-color: #f1f8ff;
+    border-radius: 10px 10px 0 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e3f2fd;
+}
+
+.stats-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.stats-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2575fc;
+}
+
+.stats-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.attendance-low {
+    color: #dc3545;
+}
+
+.attendance-medium {
+    color: #ffc107;
+}
+
+.attendance-high {
+    color: #28a745;
+}
+
+.footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: 1.5rem 0;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .stats-card {
+        padding: 1rem;
+    }
+    
+    .stats-value {
+        font-size: 1.5rem;
+    }
+    
+    .student-card .card-body {
+        padding: 1.5rem;
+    }
+}
