@@ -36,4 +36,4 @@ Click "Add Module" to create academic records
 
 Edit or delete modules using action buttons
 
-Built for Agile Front End Development Assessmen
+Built for Agile Front End Development Assessment
