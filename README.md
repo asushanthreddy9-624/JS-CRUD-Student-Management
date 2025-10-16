@@ -5,35 +5,26 @@ Student Performance Dashboard
 A simple web application to track student academic performance with attendance and marks tracking.
 
 Features
-📊 Track student attendance and marks
+# Track student attendance and marks
 
-📈 Automatic percentage calculations
+# Automatic percentage calculations
 
-📱 Mobile-friendly design
+# Mobile-friendly design
 
-💾 Cloud storage with JSONBin
+# Cloud storage with JSONBin
 
-✏️ Add, edit, and delete modules
+# Add, edit, and delete modules
 
-Quick Start
-Download all files
-
-Open index.html in your browser
-
-No installation required
-
-Technologies
+# Technologies
 HTML5, CSS3, JavaScript
-
 Bootstrap 5
-
 JSONBin API
 
-Usage
+# To Use
 Click "Edit Student" to update student details
 
 Click "Add Module" to create academic records
 
 Edit or delete modules using action buttons
 
-Built for Agile Front End Development Assessment
+ Front End Development project focused on CRED Operations
