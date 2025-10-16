@@ -6,10 +6,10 @@ toastr.options = {
     "timeOut": "3000"
 };
 
-// JSONBin Configuration - REPLACE WITH YOUR ACTUAL JSONBIN DETAILS
+// JSONBin Configuration 
 const JSONBIN_CONFIG = {
-    BIN_ID: '68f06d20d0ea881f40a5766f', // Replace with your actual bin ID
-    API_KEY: '$2a$10$euqBnYFxO/WvbXbk9nLtRuvL6P7Yn4nTRf4XZYNv/sHCy2i1rHuEG', // Replace with your actual API key
+    BIN_ID: '68f06d20d0ea881f40a5766f', 
+    API_KEY: '$2a$10$euqBnYFxO/WvbXbk9nLtRuvL6P7Yn4nTRf4XZYNv/sHCy2i1rHuEG', 
     BASE_URL: 'https://api.jsonbin.io/v3/b'
 };
 
@@ -91,37 +91,6 @@ async function loadFromJSONBin() {
             error: error.message,
             fallback: localStorageResult
         };
-    }
-}
-
-// ==================== LOCAL STORAGE FALLBACK ====================
-function saveToLocalStorage() {
-    try {
-        localStorage.setItem('studentData', JSON.stringify(studentData));
-        localStorage.setItem('modules', JSON.stringify(modules));
-        return true;
-    } catch (error) {
-        console.error('Error saving to localStorage:', error);
-        return false;
-    }
-}
-
-function loadFromLocalStorage() {
-    try {
-        const savedStudentData = localStorage.getItem('studentData');
-        const savedModules = localStorage.getItem('modules');
-        
-        if (savedStudentData) {
-            studentData = JSON.parse(savedStudentData);
-        }
-        
-        if (savedModules) {
-            modules = JSON.parse(savedModules);
-        }
-        return true;
-    } catch (error) {
-        console.error('Error loading from localStorage:', error);
-        return false;
     }
 }
 
