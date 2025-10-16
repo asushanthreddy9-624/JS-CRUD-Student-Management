@@ -6,11 +6,11 @@ toastr.options = {
     "timeOut": "3000"
 };
 
-// JSONBin Configuration - REPLACE WITH YOUR ACTUAL API KEY
+// JSONBin Configuration - REPLACE WITH YOUR ACTUAL JSONBIN DETAILS
 const JSONBIN_CONFIG = {
-    apiKey: '$2a$10$euqBnYFxO/WvbXbk9nLtRuvL6P7Yn4nTRf4XZYNv/sHCy2i1rHuEG', // Replace with your actual API key
-    binId: null, // Will be created dynamically
-    baseUrl: 'https://api.jsonbin.io/v3/b'
+    BIN_ID: '68efebf8ae596e708f15c88b', // Replace with your actual bin ID
+    API_KEY: '$2a$10$euqBnYFxO/WvbXbk9nLtRuvL6P7Yn4nTRf4XZYNv/sHCy2i1rHuEG', // Replace with your actual API key
+    BASE_URL: 'https://api.jsonbin.io/v3/b'
 };
 
 // Empty initial data
@@ -24,88 +24,35 @@ let studentData = {
 };
 
 let modules = [];
-let isOnline = true;
 
 // ==================== JSONBIN API FUNCTIONS ====================
-async function createJSONBin() {
-    const initialData = {
-        studentData,
-        modules,
-        created: new Date().toISOString(),
-        app: "Student Management System"
-    };
-
-    try {
-        const response = await fetch(JSONBIN_CONFIG.baseUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': JSONBIN_CONFIG.apiKey,
-                'X-Bin-Name': 'Student Management System Data'
-            },
-            body: JSON.stringify(initialData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        JSONBIN_CONFIG.binId = result.metadata.id;
-        localStorage.setItem('jsonBinId', JSONBIN_CONFIG.binId);
-        console.log('New JSONBin created:', JSONBIN_CONFIG.binId);
-        return { success: true, binId: JSONBIN_CONFIG.binId };
-    } catch (error) {
-        console.error('Error creating JSONBin:', error);
-        return { success: false, error: error.message };
-    }
-}
-
 async function saveToJSONBin() {
-    // If no binId exists, create one first
-    if (!JSONBIN_CONFIG.binId) {
-        const createResult = await createJSONBin();
-        if (!createResult.success) {
-            return { success: false, error: 'Failed to create JSONBin' };
-        }
-    }
-
     const dataToSave = {
         studentData,
         modules,
-        lastUpdated: new Date().toISOString(),
-        app: "Student Management System"
+        lastUpdated: new Date().toISOString()
     };
 
     try {
-        const response = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}`, {
+        const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Master-Key': JSONBIN_CONFIG.apiKey,
+                'X-Master-Key': JSONBIN_CONFIG.API_KEY,
                 'X-Bin-Versioning': 'false'
             },
             body: JSON.stringify(dataToSave)
         });
 
         if (!response.ok) {
-            // If we get a 404, the bin was deleted - create a new one
-            if (response.status === 404) {
-                console.log('Bin not found, creating new one...');
-                localStorage.removeItem('jsonBinId'); // Remove invalid bin ID
-                JSONBIN_CONFIG.binId = null;
-                return await saveToJSONBin(); // Retry with new bin
-            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const result = await response.json();
         console.log('Data saved to JSONBin');
-        isOnline = true;
         return { success: true, data: result };
     } catch (error) {
         console.error('Error saving to JSONBin:', error);
-        isOnline = false;
         // Fallback to localStorage
         saveToLocalStorage();
         return { success: false, error: error.message };
@@ -113,76 +60,38 @@ async function saveToJSONBin() {
 }
 
 async function loadFromJSONBin() {
-    // Try to get binId from localStorage first
-    const savedBinId = localStorage.getItem('jsonBinId');
-    if (savedBinId) {
-        JSONBIN_CONFIG.binId = savedBinId;
-    }
-
-    // If we have a binId, try to load from it
-    if (JSONBIN_CONFIG.binId) {
-        try {
-            const response = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}/latest`, {
-                method: 'GET',
-                headers: {
-                    'X-Master-Key': JSONBIN_CONFIG.apiKey
-                }
-            });
-
-            if (!response.ok) {
-                // If bin is not found (deleted), clear the stored ID and create new
-                if (response.status === 404) {
-                    console.log('Stored bin not found, creating new one...');
-                    localStorage.removeItem('jsonBinId');
-                    JSONBIN_CONFIG.binId = null;
-                    // Continue to create new bin below
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-            } else {
-                const result = await response.json();
-                console.log('Data loaded from JSONBin');
-
-                if (result.record && result.record.studentData) {
-                    studentData = result.record.studentData;
-                    modules = result.record.modules || [];
-                    isOnline = true;
-                    return { success: true, data: result.record, source: 'jsonbin' };
-                }
+    try {
+        const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}/latest`, {
+            method: 'GET',
+            headers: {
+                'X-Master-Key': JSONBIN_CONFIG.API_KEY
             }
-        } catch (error) {
-            console.error('Error loading from JSONBin:', error);
-            // Continue to create new bin or use localStorage
-        }
-    }
+        });
 
-    // If we reach here, either no binId or loading failed - create new bin
-    if (!JSONBIN_CONFIG.binId) {
-        const createResult = await createJSONBin();
-        if (createResult.success) {
-            // Save the initial data to the new bin
-            await saveToJSONBin();
-            return { success: true, data: { studentData, modules }, source: 'new_bin' };
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Data loaded from JSONBin');
+
+        if (result.record && result.record.studentData) {
+            studentData = result.record.studentData;
+            modules = result.record.modules || [];
+            return { success: true, data: result.record };
         } else {
-            // Fallback to localStorage
-            const localStorageResult = loadFromLocalStorage();
-            return { 
-                success: false, 
-                error: 'Failed to create JSONBin',
-                fallback: localStorageResult,
-                source: 'localStorage'
-            };
+            throw new Error('Invalid data structure from JSONBin');
         }
+    } catch (error) {
+        console.error('Error loading from JSONBin:', error);
+        // Fallback to localStorage
+        const localStorageResult = loadFromLocalStorage();
+        return { 
+            success: false, 
+            error: error.message,
+            fallback: localStorageResult
+        };
     }
-
-    // Final fallback
-    const localStorageResult = loadFromLocalStorage();
-    return { 
-        success: false, 
-        error: 'Unknown error loading data',
-        fallback: localStorageResult,
-        source: 'localStorage'
-    };
 }
 
 // ==================== LOCAL STORAGE FALLBACK ====================
@@ -659,13 +568,7 @@ document.getElementById('addModuleBtn').addEventListener('click', addModule);
 
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', async function() {
-    // Clear any potentially invalid bin ID
-    const savedBinId = localStorage.getItem('jsonBinId');
-    if (savedBinId) {
-        console.log('Found saved bin ID:', savedBinId);
-    }
-    
-    // Load data from JSONBin (will create new bin if needed)
+    // Load data from JSONBin
     const loadResult = await loadFromJSONBin();
     
     // Update display
@@ -673,11 +576,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     renderModules();
     
     if (loadResult.success) {
-        if (loadResult.source === 'new_bin') {
-            toastr.success('New cloud storage created! Your data is safe.');
-        } else {
-            toastr.success('Data loaded from cloud storage!');
-        }
+        toastr.success('Data loaded from cloud storage!');
     } else {
         toastr.info('Using local storage - cloud connection failed');
     }
