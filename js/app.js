@@ -8,7 +8,7 @@ toastr.options = {
 
 // JSONBin Configuration - REPLACE WITH YOUR ACTUAL JSONBIN DETAILS
 const JSONBIN_CONFIG = {
-    BIN_ID: '68efebf8ae596e708f15c88b', // Replace with your actual bin ID
+    BIN_ID: '68f06d20d0ea881f40a5766f', // Replace with your actual bin ID
     API_KEY: '$2a$10$euqBnYFxO/WvbXbk9nLtRuvL6P7Yn4nTRf4XZYNv/sHCy2i1rHuEG', // Replace with your actual API key
     BASE_URL: 'https://api.jsonbin.io/v3/b'
 };
